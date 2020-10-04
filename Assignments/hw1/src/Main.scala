@@ -43,8 +43,22 @@ object Main {
    e.g.) collatz(5) == (6, 36)
          (5 -> 16 -> 8 -> 4 -> 2 -> 1)
    */
+  // def collatz(n: Long): (Long, Long) = {
+  //   if (n == 1) (1, 1)
+  //   else {
+  //     val res = if (n % 2 == 0) collatz(n/2) else collatz(3*n + 1)
+  //     (res._1 + 1, res._2 + n)
+  //   }
+  // }
+
   def collatz(n: Long): (Long, Long) = {
-    ???
+    @tailrec
+    def collatzTail(n: Long, res: (Long, Long)): (Long, Long) = {
+        if (n == 1) (res._1 + 1, res._2 + 1)
+        else if (n % 2 == 0) collatzTail(n/2, (res._1 + 1, res._2 + n))
+        else collatzTail(3*n+1, (res._1 + 1, res._2 + n))
+    }
+    collatzTail(n, (0, 0))
   }
 
   /*
@@ -61,7 +75,19 @@ object Main {
    Hint: Increase the number of subdivision `n` until the value moves less then 0.001
    */
   def integral(f: Double => Double, a: Double, b: Double): Double = {
-    ???
+    @tailrec
+    def integralTail(n: Double, res: Double): Double = {
+      @tailrec
+      def RiemannTail(delta: Double, x: Double, sum: Double): Double = {
+        if (x >= b) sum
+        else RiemannTail(delta, x + delta, sum + f(x)*delta)
+      }
+      val sum = RiemannTail((b-a)/n, a, 0)
+      if (math.abs(res - sum) < 0.001) return sum
+      else integralTail(n*2, sum)
+    }
+
+    integralTail(1, 1)
   }
 
   /*
@@ -82,6 +108,6 @@ object Main {
            (See https://stackoverflow.com/questions/16539488/why-scala-doesnt-make-tail-call-optimization)
    */
  def ppa(p: (Int, Int)=>Int, a: Int, b: Int): Int = {
-   ???
+   1
  }
 }
