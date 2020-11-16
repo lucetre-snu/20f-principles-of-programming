@@ -1,6 +1,7 @@
 package pp202002.hw2
 import pp202002.hw2.Data._
 import scala.annotation.tailrec
+import scala.util.control.TailCalls._
 
 object Main {
 
@@ -37,7 +38,7 @@ object Main {
        */
       // type CommonTy = Any // Any
 
-      type CommonTy = ???
+      type CommonTy = { val a: A; val d: D }
     }
   }
 
@@ -112,13 +113,98 @@ object Main {
         Therefore, you can't match List like "case Cons(hd, tl) => ..."
    */
 
-  def lexer(l: List[Char]): List[Token] = ???
+    def lexer(l: List[Char]): List[Token] = {
+        @tailrec
+        def lexerCont(xs: List[Char], cont: List[Token]=>TailRec[List[Token]]): List[Token] = {
+            xs match {
+                case Nil => cont(Nil).result
+                case hd::tl => {
+                    if (hd == '(') lexerCont(tl, (r) => tailcall(cont(Open::r)))
+                    else if (hd == ')') lexerCont(tl, (r) => tailcall(cont(Close::r)))
+                    else if (hd == '*') lexerCont(tl, (r) => tailcall(cont(Star::r)))
+                    else if (hd == '|') lexerCont(tl, (r) => tailcall(cont(Bar::r)))
+                    else if (hd >= '0' && hd <= '9') lexerCont(tl, (r) => tailcall(cont(Letter(hd)::r)))
+                    else if (hd >= 'a' && hd <= 'z') lexerCont(tl, (r) => tailcall(cont(Letter(hd)::r)))
+                    else if (hd >= 'A' && hd <= 'Z') lexerCont(tl, (r) => tailcall(cont(Letter(hd)::r)))
+                    else lexerCont(tl, (r) => tailcall(cont(Other::r)))
+                }
+            }
+        }
+        lexerCont(l, (r)=>done(r))   
+    }
+    
+    def parser(l: List[Token]): Exp = {
+        def isNotOp(e: Exp): Boolean = {
+            e match {
+                case EChar('|') => false
+                case EChar('(') => false
+                case EError => false
+                case _ => true
+            }
+        }
 
-  def parser(l: List[Token]): Exp = ???
+        @tailrec
+        def parserIter(xs: List[Token], stack: List[Exp]): Exp = {
+            xs match {
+                case hd::tl => hd match {
+                    // (single alphanumeric character)
+                    case Letter(c) => parserIter(tl, EChar(c)::stack)
+                    case Bar => parserIter(tl, EChar('|')::stack)
+                    case Open => parserIter(tl, EChar('(')::stack)
+                    case Close => tl match {
+                        // (repetition / kleene star) & tl updated
+                        case Star::tl => {
+                            stack match {
+                                case hd1::tl1 if isNotOp(hd1) => tl1 match {
+                                    case hd2::tl2 if hd2 == EChar('(') => {
+                                        parserIter(tl, EStar(hd1)::tl2)
+                                    }
+                                    case _ => EError
+                                }
+                                case _ => EError
+                            }
+                        }
+                        case _ => {
+                            stack match {
+                                case hd1::tl1 if isNotOp(hd1) => tl1 match {
+                                    // (or)
+                                    case EChar('|')::tl2 => tl2 match {
+                                        case hd3::tl3 if isNotOp(hd3) => tl3 match {
+                                            case hd4::tl4 if hd4 == EChar('(') => {
+                                                parserIter(tl, EOr(hd3, hd1)::tl4)
+                                            }
+                                            case _ => EError
+                                        }
+                                        case _ => EError
+                                    }
+                                    // (concatenation)                  
+                                    case hd2::tl2 if isNotOp(hd2) => tl2 match {
+                                        case hd3::tl3 if hd3 == EChar('(') => {
+                                            parserIter(tl, EConcat(hd2, hd1)::tl3)
+                                        }
+                                        case _ => EError
+                                    }
+                                    case _ => EError
+                                }
+                                case _ => EError
+                            }
+                        }
+                    }
+                    case _ => EError
+                }                                                 
+                case _ => stack match {
+                    case Nil => EEpsilon
+                    case hd::tl if tl == Nil => hd
+                    case _ => EError
+                }
+            }
+        }
+        parserIter(l, Nil)
+    }
 
-  def converter(l: List[Char]): Exp = {
-    parser(lexer(l))
-  }
+    def converter(l: List[Char]): Exp = {
+        parser(lexer(l))
+    }
 
   /*
     Exercise 2-2: Regex Matcher by Brzozowski derivative
@@ -135,5 +221,42 @@ object Main {
     https://www.ccs.neu.edu/home/turon/re-deriv.pdf
    */
 
-  def matcher(e: Exp, s: String): Boolean = ???
+    def matcher(e: Exp, s: String): Boolean = {
+        def helper(x: Exp): Boolean = {
+            x match {
+                case EError => false
+                case EEpsilon => true
+                case EStar(_) => true
+                case EChar(_) => false
+                case EConcat(e1, e2) => helper(e1) & helper(e2)
+                case EOr(e1, e2) => helper(e1) | helper(e2)
+            }
+        }
+
+        def derivative(x: Exp, c: Char): Exp = {
+            x match {
+                case EEpsilon => EError
+                case EChar(c1) if c1 == c => EEpsilon
+                case EChar(_) => EError
+                case EStar(e) => EConcat(derivative(e, c), x)
+                case EConcat(e1, e2) => {
+                    if (helper(e1)) EOr(EConcat(derivative(e1, c), e2), derivative(e2, c))
+                    else EConcat(derivative(e1, c), e2)
+                }
+                case EOr(e1, e2) => EOr(derivative(e1, c), derivative(e2, c))
+                case _ => EError
+            }
+        }
+
+        @tailrec
+        def matcherIter(x: Exp, i: Int): Boolean = {
+            if (i >= s.length) helper(x)
+            else matcherIter(derivative(x, s(i)), i+1)
+        }
+
+        e match {
+            case EError => false
+            case _ => matcherIter(e, 0)
+        }
+    }
 }
