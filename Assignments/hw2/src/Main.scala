@@ -26,7 +26,7 @@ object Main {
 
       type Ty2 = {
         def apply: { val func: Func2 ; val e: E } => { val b: B ; val f: F ; val c: C }
-        def function1: { val func: Func4 } => { val c: C; val e:E }
+        def function1: { val func: Func4 } => { val c: C; val e: E }
         val a: A
         val c: C
         val d: D
@@ -36,8 +36,6 @@ object Main {
        Find suitable common supertype of Ty1 and Ty2,
        and replace "Any" with that type.
        */
-      // type CommonTy = Any // Any
-
       type CommonTy = { val a: A; val d: D }
     }
   }
