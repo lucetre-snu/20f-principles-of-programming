@@ -1,0 +1,1 @@
+["sbt.Task[scala.collection.immutable.Map[java.lang.String, scala.collection.Seq[scala.Tuple2[java.nio.file.Path, sbt.nio.FileStamp]]]]",{"2.13.4":{"hashes":[["/home/lucetre/semester/20f-principles-of-programming/Project/src/test/scala/InterpreterTest.scala","879a1d738820dd915b75b8f9e88b611ce4f22048"]],"lastModifiedTimes":[]}}]

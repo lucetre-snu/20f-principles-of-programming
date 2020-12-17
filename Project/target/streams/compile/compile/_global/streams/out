@@ -1,0 +1,61 @@
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:91:50: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : curEnv.type (with underlying type Any)[0m
+[0m[[0m[31merror[0m] [0m[0m required: Env[0m
+[0m[[0m[31merror[0m] [0m[0m                case AVName(x) => envOps.setItem(curEnv, x, LVVal(interpIter(exp, env)))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                 ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:91:78: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Any[0m
+[0m[[0m[31merror[0m] [0m[0m required: pp202002.project.common.Expr[0m
+[0m[[0m[31merror[0m] [0m[0m                case AVName(x) => envOps.setItem(curEnv, x, LVVal(interpIter(exp, env)))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:92:50: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : curEnv.type (with underlying type Any)[0m
+[0m[[0m[31merror[0m] [0m[0m required: Env[0m
+[0m[[0m[31merror[0m] [0m[0m                case ANName(x) => envOps.setItem(curEnv, x, LVLazy(exp, env, None))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                 ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:92:68: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Any[0m
+[0m[[0m[31merror[0m] [0m[0m required: pp202002.project.common.Expr[0m
+[0m[[0m[31merror[0m] [0m[0m                case ANName(x) => envOps.setItem(curEnv, x, LVLazy(exp, env, None))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:95:35: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : newEnv.type (with underlying type Any)[0m
+[0m[[0m[31merror[0m] [0m[0m required: Env[0m
+[0m[[0m[31merror[0m] [0m[0m            interpIter(func.body, newEnv)[0m
+[0m[[0m[31merror[0m] [0m[0m                                  ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:100:62: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : curEnv.type (with underlying type Any)[0m
+[0m[[0m[31merror[0m] [0m[0m required: Env[0m
+[0m[[0m[31merror[0m] [0m[0m                case BDef(f, params, body) => envOps.setItem(curEnv, f, LVVal(VFunc(f, params, body, curEnv)))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:100:102: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : curEnv.type (with underlying type Any)[0m
+[0m[[0m[31merror[0m] [0m[0m required: Env[0m
+[0m[[0m[31merror[0m] [0m[0m                case BDef(f, params, body) => envOps.setItem(curEnv, f, LVVal(VFunc(f, params, body, curEnv)))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:101:62: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : curEnv.type (with underlying type Any)[0m
+[0m[[0m[31merror[0m] [0m[0m required: Env[0m
+[0m[[0m[31merror[0m] [0m[0m                case BVal(x, e)            => envOps.setItem(curEnv, x, LVVal(interpIter(e, curEnv)))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:101:93: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : curEnv.type (with underlying type Any)[0m
+[0m[[0m[31merror[0m] [0m[0m required: Env[0m
+[0m[[0m[31merror[0m] [0m[0m                case BVal(x, e)            => envOps.setItem(curEnv, x, LVVal(interpIter(e, curEnv)))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                                            ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:102:62: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : curEnv.type (with underlying type Any)[0m
+[0m[[0m[31merror[0m] [0m[0m required: Env[0m
+[0m[[0m[31merror[0m] [0m[0m                case BLVal(x, e)           => envOps.setItem(curEnv, x, LVLazy(e, curEnv, None))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:102:83: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : curEnv.type (with underlying type Any)[0m
+[0m[[0m[31merror[0m] [0m[0m required: Env[0m
+[0m[[0m[31merror[0m] [0m[0m                case BLVal(x, e)           => envOps.setItem(curEnv, x, LVLazy(e, curEnv, None))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                                  ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/lucetre/semester/20f-principles-of-programming/Project/src/main/scala/pp202002/project/impl/ExprInterpreter.scala:105:27: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : newEnv.type (with underlying type Any)[0m
+[0m[[0m[31merror[0m] [0m[0m required: Env[0m
+[0m[[0m[31merror[0m] [0m[0m            interpIter(e, newEnv)[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0m12 errors found[0m
